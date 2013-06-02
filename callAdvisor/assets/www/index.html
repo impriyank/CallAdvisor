@@ -3,9 +3,9 @@
 	* Brief:		UI is handled in this html page
 	* Version:		1.0
 	* Publisher: 	SAP 
-	* CopyRight: 	Copyright (c) SAP @ 2013
+	* CopyRight: 	Copyright (c) @ 2013
 	* Author: 		Sachin Mohite
-	* email: 		s.mohite@sap.com
+	* email: 		sachin.mohite@gmail.com
 	* Description:	
 -->
 
@@ -40,17 +40,6 @@
 		</style>        
 	
 		<script type="text/javascript">
-											
-
-			/**********************************	
-			* Name:				$(document).ready(
-			* Return:			void 
-			* Parameters:		
-			*					function() - Callback function						
-			* Description:
-			*					Called when phonegap javascript is loaded
-			* Author :			Sachin Mohite
-			************************************/
 			
 			TABLES_TO_SYNC = [
 			    {tableName : 'CALLLOG'} //if idName not specified, it will assume that it's "id"
@@ -59,23 +48,12 @@
 			//var list = null;
 			$(document).ready(function()
 			{			
-				localStorage.fireCount = 0;
-				var myVar=setInterval(function(){gameClock()},1000);
-				
-				$(window).resize();
-			  
-				$(document).bind("tap", function (event)
-				{
-					keyHandling(event);
-					
-				});//$(document).bind("taphold", function (event)
-				
 				window.plugins.CallLog.list('month', successCallback, null);
 				window.plugins.CallLog.contact('9372744039', null, null);
 				var db = window.openDatabase("TestDB", "1.0", "Test DB", 1000000);
 				db.transaction(createTable, errorCB, null);
-				db.transaction(populateDB, errorCB, successCB);
-				db.transaction(queryDB, errorCB, querySuccess);
+				db.transaction(populateDB, errorCB, null);
+				db.transaction(queryDB, errorCB, null);
 				//DBSYNC.initSync(TABLES_TO_SYNC, webSqlDb, sync_info, 'http://www.myserver.com', callBackEndInit);			
 			});//$(document).ready(function()
 			
@@ -124,162 +102,10 @@
 		    }
 		
 		    // Transaction success callback
-		    //
 		    function successCB() {
 		        console.log("SQL Query Success!");
 		    }			
 			
-			$(window).resize(function()
-			{
-				var canvas=document.getElementById("myCanvas");
-				
-				$('#div1').css(
-				{
-					position:'absolute',
-					left: ($(window).width() - $('#div1').outerWidth())/2,
-					top: ($(window).height() - $('#div1').outerHeight())/2
-				});
-				
-				$('#myCanvas').css(
-				{
-					position:'absolute',
-					left: ($(window).width() - canvas.width)/2,
-					top: ($(window).height() - canvas.height)/2
-				});
-				
-			});
-			
-			function keyHandling(event)
-			{
-				alert("Hi");
-					
-				//Handler for .ready() called.
-				if (localStorage.fireCount)
-				{
-					localStorage.fireCount=Number(localStorage.fireCount)+1;
-					
-				}//if (localStorage.fireCount)
-				else
-				{
-					localStorage.fireCount=0;
-					
-				}//else
-			}
-			
-			function draw()
-			{
-				
-				var canvas=document.getElementById("myCanvas");
-				var ctx=canvas.getContext("2d");
-				
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				
-				ctx.fillStyle="NavajoWhite";
-				ctx.fillRect(0,0,canvas.width, canvas.height);
-
-				ctx.fillStyle="black";				
-				ctx.font = "10pt Calibri";
-				ctx.textAlign = "left";
-				ctx.fillText("Score:", 2, 12);				
-				
-				ctx.fillText("Bullets:"+ localStorage.fireCount, 2, 24);
-				
-				
-				// Create gradient
-				//var grd=ctx.createLinearGradient(0,0,200,0);
-				//grd.addColorStop(0,"red");
-				//grd.addColorStop(1,"white");
-				//ctx.beginPath();
-				//ctx.arc(95,50,10,0,2*Math.PI);
-				//ctx.fillStyle = grd;
-				//ctx.stroke();			
-			}
-			
-			function gameClock()
-			{
-				draw();				
-			}
-				
-
-			
-			/**********************************	
-			* Name:				sendEmailWithScreenshot
-			* Return:			void 
-			* Parameters:		
-			*					No parameters					
-			* Description:
-			*					This method calls the email composers
-			* Author :			Sachin Mohite
-			************************************/			
-			function sendEmailWithScreenshot()
-			{
-
-			}//function sendEmail()
-	
-	
-	
-			/**********************************	
-			* Name:				saveScreenshot
-			* Return:			void 
-			* Parameters:		
-			*					No parameters					
-			* Description:
-			*					This method calls wrapper method saveScreenshot
-			* Author :			Sachin Mohite
-			************************************/			
-			function saveScreenshot()
-			{
-
-
-			}//function saveScreenshot()
-		
-		
-			/**********************************	
-			* Name:				saveScreenshot
-			* Return:			void 
-			* Parameters:		
-			*					buttonIndex - index of the button got called					
-			* Description:
-			*					This method process the confirmation dialog result
-			* Author :			Sachin Mohite
-			************************************/
-		    function onConfirm(buttonIndex)
-		    {
-		       		
-		        if(buttonIndex==1)
-		        {
-		        	saveScreenshot();
-
-		        }//if(buttonIndex==1)
-		        
-		        else if(buttonIndex==2)
-		        {
-		        	sendEmailWithScreenshot();
-       			        
-		        }//else if(buttonIndex==2)
-		        
-		    }//function onConfirm(buttonIndex)
-	
-	
-			/**********************************	
-			* Name:				showConfirm
-			* Return:			void 
-			* Parameters:		
-			*					No parameters					
-			* Description:
-			*					This method Show a custom confirmation dialog
-			* Author :			Sachin Mohite
-			************************************/
-		    function showConfirm()
-		    {
-	        	navigator.notification.confirm(
-					'You can save this screen to the Gallery or Email it to your mail id!',  // message
-					onConfirm,              // callback to invoke with index of button pressed
-					'Capture the Screen',            // title
-					'Save,eMail, Cancel'          // buttonLabels
-				);			
-	
-		    }//function showConfirm()			
 	    
 		</script>
 		
@@ -292,16 +118,14 @@
 		
 			<!-- Page Header Start -->
 			<div data-role="header" data-position="fixed">
-				<h1>HIT ME</h1>
+				<h1>Header!</h1>
 			</div>
 			<!-- Page Header End -->
 			
 			<!-- Page Body Start -->
 			<div data-role="content" >
 				<p>
-					<canvas id="myCanvas" width='$(window).width()/2' height="$(document).height()" style="border:2px solid #666;">
-						Your browser does not support the HTML5 canvas tag.
-					</canvas>
+					Content come here
 				</p>
 			</div>
 			<!-- Page Body End -->
@@ -309,7 +133,7 @@
 			<!-- Page Footer Start -->
 			<div data-role="footer" data-position="fixed">
 				<h4>
-					Tap to Fire!
+					Footer!
 				</h4>
 			</div>
 			<!-- Page Footer End -->
