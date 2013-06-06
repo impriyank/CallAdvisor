@@ -66,8 +66,38 @@
 					 {
 					 	console.log("Synchronized error");
 					 }
-				});		
+				});	
+				
+				$(document).scroll(function()
+				{
+
+				    var delta = $(window).scrollTop() - $("#myTable th").offset().top;
+				    if(delta > 0)
+				    {
+				        translate($("#myTable th"),0,delta-2);
+				    }
+				    else
+				    {
+				        translate($("#myTable th"),0,0);
+				    }
+				});
+					
 			});//$(document).ready(function()
+			
+
+			
+			function translate(element, x, y)
+			{    
+			    var translation = "translate(" + x + "px," + y + "px)"
+			
+			    element.css({
+			        "transform": translation,
+			        "-ms-transform": translation,
+			        "-webkit-transform": translation,
+			        "-o-transform": translation,
+			        "-moz-transform": translation
+			    });
+			}
 			
 		    // Transaction success callback
 		    function successSync() {
@@ -92,7 +122,7 @@
 		    {		    	
 		    	for (i = 0; i < list.rows.length; i++)
 				{					
-					tx.executeSql("INSERT INTO CALLLOG (number, cachedName, type, date, new, duration, cachedNumberType) VALUES (?,?,?,?,?,?,?)", [list.rows[i].number, list.rows[i].cachedName, list.rows[i].type, list.rows[i].date, list.rows[i].new, list.rows[i].duration, list.rows[i].cachedNumberType]);
+					tx.executeSql("INSERT INTO CALLLOG (number, cachedName, type, date, new, duration, cachedNumberType) VALUES (?,?,?,?,?,?,?)", [list.rows[i].number, list.rows[i].cachedName, 'All', list.rows[i].date, list.rows[i].new, list.rows[i].duration, list.rows[i].cachedNumberType]);
 				}//for (i = 0; i < e.rows.length; i++)
 
 		    }	
@@ -113,9 +143,10 @@
 		        for (var i=0; i<len; i++)
 		        {		        
 					myHtml = myHtml + "<tr>" +
-								"<td>" +results.rows.item(i).cachedName+ "</td>" +							
-								"<td>" +results.rows.item(i).number+ "</td>" +
-								"<td>" +results.rows.item(i).duration+ "</td>"+		
+								"<li><td>" +results.rows.item(i).cachedName+ "" +
+								"<br>" + results.rows.item(i).number+ "</td></li>" +							
+								"<td>" +results.rows.item(i).duration+"</td>"+
+								"<td>" +results.rows.item(i).type+ "</td>" +
 								"</tr>";
 
 		        
@@ -155,9 +186,10 @@
 			<!-- Page Body Start -->
 			<div data-role="content" >
 				<p>
-					<div data-role="fieldcontain">
+					<div data-role="fieldcontain" data-icon="plus">
 						<label for="select-choice-1" align="center" class="select">Call Advisor</label>
 						<select name="select-choice-1" id="select-choice-1">
+							<option value="standard">All</option>
 							<option value="standard">Daily</option>
 							<option value="rush">Weekly</option>
 							<option value="express">Anniversaries</option>
@@ -166,13 +198,16 @@
 						</select>
 					</div>
 					
-					<table data-role="table" data-mode="columntoggle" id="myTable">
-						<tr>
-							<th>Name</th>
-							<th>Number</th>
-							<th>Duration</th>
-						</tr>
-					</table>
+					<div style="height:300px">					
+						<table data-role="table" align="center" data-mode="columntoggle" border="1" id="myTable">
+							<tr>
+								<th>Name</th>
+								<th>Time</th>
+								<th>Type</th>
+							</tr>
+						</table>					
+					</div>
+					
 				</p>
 			</div>
 			<!-- Page Body End -->
