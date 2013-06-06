@@ -54,8 +54,25 @@
 				db.transaction(createTable, errorCB, null);
 				db.transaction(populateDB, errorCB, null);
 				db.transaction(queryDB, errorCB, null);
-				//DBSYNC.initSync(TABLES_TO_SYNC, webSqlDb, sync_info, 'http://www.myserver.com', callBackEndInit);			
+				DBSYNC.initSync(TABLES_TO_SYNC, db, "CALLLOG", 'http://www.myserver.com', successCB);	
+				DBSYNC.syncNow(successSync, function(result)
+				{
+					console.log("In Synchronized:");
+					 if (result.syncOK === true)
+					 {
+					     console.log("Synchronized successfully");
+					 }
+					 else
+					 {
+					 	console.log("Synchronized error");
+					 }
+				});		
 			});//$(document).ready(function()
+			
+		    // Transaction success callback
+		    function successSync() {
+		        console.log("Sync Success!");
+		    }			
 			
 			function successCallback(e)
 			{
@@ -90,9 +107,22 @@
 		    {
 		        var len = results.rows.length;
 		        
-		        for (var i=0; i<len; i++){
-		            console.log("Row = " +  results.rows.item(i).id + "; Number = " + results.rows.item(i).number + "; cachedName =  " + results.rows.item(i).cachedName);
+		        var myTable = $("#myTable");
+		        var myHtml = myTable.html();
+		        
+		        for (var i=0; i<len; i++)
+		        {		        
+					myHtml = myHtml + "<tr>" +
+								"<td>" +results.rows.item(i).cachedName+ "</td>" +							
+								"<td>" +results.rows.item(i).number+ "</td>" +
+								"<td>" +results.rows.item(i).duration+ "</td>"+		
+								"</tr>";
+
+		        
+		            //console.log("Row = " +  results.rows.item(i).id + "; Number = " + results.rows.item(i).number + "; cachedName =  " + results.rows.item(i).cachedName);
 		        }
+		        
+		        myTable.html(myHtml);
 		    }	    
 		
 		    // Transaction error callback
@@ -125,7 +155,24 @@
 			<!-- Page Body Start -->
 			<div data-role="content" >
 				<p>
-					Content come here
+					<div data-role="fieldcontain">
+						<label for="select-choice-1" align="center" class="select">Call Advisor</label>
+						<select name="select-choice-1" id="select-choice-1">
+							<option value="standard">Daily</option>
+							<option value="rush">Weekly</option>
+							<option value="express">Anniversaries</option>
+							<option value="overnight">Reminders</option>
+							<option value="overnight">Suggestions</option>
+						</select>
+					</div>
+					
+					<table data-role="table" data-mode="columntoggle" id="myTable">
+						<tr>
+							<th>Name</th>
+							<th>Number</th>
+							<th>Duration</th>
+						</tr>
+					</table>
 				</p>
 			</div>
 			<!-- Page Body End -->
