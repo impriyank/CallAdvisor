@@ -68,37 +68,10 @@
 					 }
 				});	
 				
-				$(document).scroll(function()
-				{
-
-				    var delta = $(window).scrollTop() - $("#myTable th").offset().top;
-				    if(delta > 0)
-				    {
-				        translate($("#myTable th"),0,delta-2);
-				    }
-				    else
-				    {
-				        translate($("#myTable th"),0,0);
-				    }
-				});
-					
+				
 			});//$(document).ready(function()
 			
 
-			
-			function translate(element, x, y)
-			{    
-			    var translation = "translate(" + x + "px," + y + "px)"
-			
-			    element.css({
-			        "transform": translation,
-			        "-ms-transform": translation,
-			        "-webkit-transform": translation,
-			        "-o-transform": translation,
-			        "-moz-transform": translation
-			    });
-			}
-			
 		    // Transaction success callback
 		    function successSync() {
 		        console.log("Sync Success!");
@@ -137,23 +110,24 @@
 		    {
 		        var len = results.rows.length;
 		        
-		        var myTable = $("#myTable");
-		        var myHtml = myTable.html();
+		        var myList = $("#myList");
+		        var myHtml = myList.html();
 		        
 		        for (var i=0; i<len; i++)
 		        {		        
-					myHtml = myHtml + "<tr>" +
-								"<li><td>" +results.rows.item(i).cachedName+ "" +
-								"<br>" + results.rows.item(i).number+ "</td></li>" +							
-								"<td>" +results.rows.item(i).duration+"</td>"+
-								"<td>" +results.rows.item(i).type+ "</td>" +
-								"</tr>";
+					myList.append("<li><a href='#'>" +
+										"<img  src=\"/file:///android_res/drawable/ic_launcher.png\" class=\"ui-li-icon\"/>" +
+										results.rows.item(i).cachedName +
+										"<br>" + results.rows.item(i).number +
+										"</a></li>");
 
 		        
 		            //console.log("Row = " +  results.rows.item(i).id + "; Number = " + results.rows.item(i).number + "; cachedName =  " + results.rows.item(i).cachedName);
 		        }
 		        
-		        myTable.html(myHtml);
+		        console.log(myHtml);
+		        myList.listview("refresh");
+		        //myList.html(myHtml);
 		    }	    
 		
 		    // Transaction error callback
@@ -186,8 +160,7 @@
 			<!-- Page Body Start -->
 			<div data-role="content" >
 				<p>
-					<div data-role="fieldcontain" data-icon="plus">
-						<label for="select-choice-1" align="center" class="select">Call Advisor</label>
+					<div data-role="fieldcontain" data-icon="plus" data-position="fixed" style="top: 20px; align:center">						
 						<select name="select-choice-1" id="select-choice-1">
 							<option value="standard">All</option>
 							<option value="standard">Daily</option>
@@ -198,14 +171,12 @@
 						</select>
 					</div>
 					
-					<div style="height:300px">					
-						<table data-role="table" align="center" data-mode="columntoggle" border="1" id="myTable">
-							<tr>
-								<th>Name</th>
-								<th>Time</th>
-								<th>Type</th>
-							</tr>
-						</table>					
+					<div style="width:290px;height:380px;overflow-y:scroll">
+		
+						<ul data-role="listview" class="ui-li-icon" data-inset="true" id="myList">					
+							
+						</ul>
+						
 					</div>
 					
 				</p>
